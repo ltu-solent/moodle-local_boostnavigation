@@ -78,21 +78,6 @@ function local_boostnavigation_build_custom_nodes($customnodes, navigation_node 
         $pagefullurl = new moodle_url($FULLME);
     }
 
-//SU_AMEND START Add bookmarks to navdrawer menu
-    global $DB;
-    if(isloggedin() && !isguestuser()){
-      $bookmarks = $DB->get_records_sql('SELECT * FROM {mybookmarks} WHERE user = ? ORDER BY sort_order ASC', array($USER->id));
-      $bookmarks_node = "Bookmarks | /local/mybookmarks/addbookmark.php
-      -Bookmark this page|/local/mybookmarks/addbookmark.php|||||fa-plus
-      -Manage my bookmarks|/local/mybookmarks/manage.php|||||fa-bookmark
-      ";
-      foreach($bookmarks as $k=>$v){
-        $bookmarks_node .= "-" . $v->bookmark_name . "|" . $v->url ."
-        "; // This MUST be on a new line otherwise the menu messes up
-      }
-      $customnodes =  $bookmarks_node . $customnodes;
-    }
-//SU_AMEND END
     // Initialize counter which is later used for the node IDs.
     $nodecount = 0;
 

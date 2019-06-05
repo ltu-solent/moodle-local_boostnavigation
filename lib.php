@@ -602,7 +602,8 @@ function local_boostnavigation_extend_navigation(global_navigation $navigation) 
         global $DB, $USER;
         if(isloggedin() && !isguestuser()){
           $bookmarks = $DB->get_records_sql('SELECT * FROM {mybookmarks} WHERE user = ? ORDER BY sort_order ASC', array($USER->id));
-          $bookmarks_node = "Bookmarks | /local/mybookmarks/addbookmark.php
+          $bookmarks_node = "
+          Bookmarks | /local/mybookmarks/addbookmark.php
           -Bookmark this page|/local/mybookmarks/addbookmark.php
           -Manage my bookmarks|/local/mybookmarks/manage.php
           ";
@@ -610,7 +611,7 @@ function local_boostnavigation_extend_navigation(global_navigation $navigation) 
             $bookmarks_node .= "-" . $v->bookmark_name . "|" . $v->url ."
             "; // This MUST be on a new line otherwise the menu messes up
           }
-          $config->insertcustombottomnodesusers =  $bookmarks_node . $config->insertcustombottomnodesusers;
+          $config->insertcustombottomnodesusers =  $config->insertcustombottomnodesusers . $bookmarks_node;
         }
 //SU_AMEND END
 

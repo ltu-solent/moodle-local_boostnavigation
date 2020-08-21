@@ -628,6 +628,23 @@ function local_boostnavigation_extend_navigation(global_navigation $navigation) 
         }
     }
 
+	//SU_AMEND START - Navigation: Add bookmarks to navdrawer menu
+        global $DB, $USER;
+        if(isloggedin() && !isguestuser()){
+          $bookmarks = $DB->get_records_sql('SELECT * FROM {mybookmarks} WHERE user = ? ORDER BY sort_order ASC', array($USER->id));
+          $bookmarks_node = "
+          Bookmarks | /local/mybookmarks/addbookmark.php
+          -Bookmark this page|/local/mybookmarks/addbookmark.php
+          -Manage my bookmarks|/local/mybookmarks/manage.php
+          ";
+          foreach($bookmarks as $k=>$v){
+            $bookmarks_node .= "-" . $v->bookmark_name . "|" . $v->url ."
+            "; // This MUST be on a new line otherwise the menu messes up
+          }
+          $config->insertcustombottomnodesusers =  $config->insertcustombottomnodesusers . $bookmarks_node;
+        }
+//SU_AMEND END
+
     // Check if admin wants us to insert custom course nodes for admins in Boost's nav drawer.
     if (isset($config->insertcustomcoursenodesadmins) && !empty($config->insertcustomcoursenodesadmins) && is_siteadmin()) {
         // Only proceed if we are inside a course and we are _not_ on the frontpage.

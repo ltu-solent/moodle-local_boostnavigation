@@ -868,9 +868,11 @@ function local_boostnavigation_extend_navigation(global_navigation $navigation) 
         global $DB, $USER;
         if(isloggedin() && !isguestuser()){
           $bookmarks = $DB->get_records_sql('SELECT * FROM {mybookmarks} WHERE user = ? ORDER BY sort_order ASC', array($USER->id));
+          $pageurl = $PAGE->url;
+            $pagetitle = $PAGE->title;
           $bookmarks_node = "
           Bookmarks | /local/mybookmarks/addbookmark.php
-          -Bookmark this page|/local/mybookmarks/addbookmark.php
+          -Bookmark this page|/local/mybookmarks/addbookmark.php?bookurl=$pageurl&bookmarkname=$pagetitle
           -Manage my bookmarks|/local/mybookmarks/manage.php
           ";
           foreach($bookmarks as $k=>$v){
